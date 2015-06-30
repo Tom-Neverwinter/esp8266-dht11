@@ -14,7 +14,7 @@ ap="XX"
     end
 wifi.sta.getap(listap)
 
---modify according your wireless router settings
+--modify according to your wireless router settings
 wifi.sta.config(ssid, ssid_pass)
 wifi.sta.connect()
 tmr.alarm(1, 1000, 1, function() 
