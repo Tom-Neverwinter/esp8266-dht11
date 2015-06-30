@@ -20,8 +20,8 @@ sensorType="dht11" 	-- set sensor type dht11 or dht22
 	temp="XX"
 	fare="XX"
 	count=1
-	PIN = 3 --  data pin, GPIO5= 1
--- gpio0= 3  gpio2= 4
+	PIN = 3 --  data pin, 
+-- GPIO0= 3  GPIO2= 4 GPIO5= 1
 --load DHT module and read sensor
 
 function ReadDHT()
@@ -32,7 +32,7 @@ function ReadDHT()
      while (dht.getHumidity() == nil and c < 10) do
           print("Error reading from DHT. retry "..c)
           c = c + 1
-          tmr.delay(10000000)
+          tmr.delay(10000000) -- 10 seconds
           dht.read(PIN)
      end
 
@@ -70,7 +70,11 @@ conn:send("\r\n")
 conn:on("sent",function(conn)
                       print("Closing connection")
                       conn:close()
-                      node.dsleep(300000000)
+                      --node.dsleep(300000000) -- 300seconds or 5 minutes
+                      --attempt to make this ESP-01 compatible
+                      wifi.sleeptype(wifi.LIGHT_SLEEP)
+                      tmr.delay(300000000) -- 300seconds or 5 minutes
+                      wifi.sleeptype(wifi.NONE_SLEEP)
                   end)
 conn:on("disconnection", function(conn)
                       print("Got disconnection...")
